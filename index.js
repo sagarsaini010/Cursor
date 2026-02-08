@@ -2,6 +2,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import readlineSync from "readline-sync";
 import dotenv, { config } from "dotenv";
 import { exec } from "child_process";
+import fs from "fs";
+import path from "path";
 import util from "util";
 import os from "os";
 
@@ -22,6 +24,16 @@ async function executeCommand(command) {
 
     for (const cmd of commands) {
       if (!cmd.trim()) continue;
+      const trimmed = cmd.trim();
+      if (trimmed.toLowerCase().startsWith("mkdir ")) {
+        const dirArg = trimmed.slice(6).trim();
+        const dirName = dirArg.replace(/^["']|["']$/g, "");
+        const dirPath = path.resolve(dirName);
+        if (fs.existsSync(dirPath)) {
+          finalOutput += `Skipped: directory already exists (${dirName})\n`;
+          continue;
+        }
+      }
       const { stdout, stderr } = await execute(cmd);
       finalOutput += stdout || stderr;
     }
@@ -50,9 +62,27 @@ const commandExecutor = {
 };
 
 const History = [];
+const requestTimestamps = [];
+const MAX_REQUESTS_PER_MINUTE = 950;
+const REQUEST_WINDOW_MS = 60_000;
+
+async function waitForRateLimit() {
+  while (true) {
+    const now = Date.now();
+    while (requestTimestamps.length > 0 && now - requestTimestamps[0] > REQUEST_WINDOW_MS) {
+      requestTimestamps.shift();
+    }
+    if (requestTimestamps.length < MAX_REQUESTS_PER_MINUTE) {
+      return;
+    }
+    const waitMs = REQUEST_WINDOW_MS - (now - requestTimestamps[0]);
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+}
 
 async function buildWebsite(question) {
   while (true) {
+    await waitForRateLimit();
     const result = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: History,
@@ -64,50 +94,30 @@ ENVIRONMENT:
 Operating System: ${platform}
 
 SCOPE:
-You are ONLY allowed to create and edit:
-- HTML files
-- CSS files
-- JavaScript files
-
-Do NOT:
-- Install npm packages
-- Use frameworks (React, Angular, Vue)
-- Use backend code
-- Use databases
-- Run servers
-- Create node projects
+- Allowed files: HTML, CSS, JavaScript only.
+- Forbidden: npm installs, frameworks, backend, databases, servers, node projects.
 
 COMMAND RULES:
-1. Use ONLY one command at a time.
-2. Never return multiple commands.
-3. Commands must work on Windows.
-4. Do NOT use Linux or Bash commands such as touch, ls, rm.
-5. Use:
-   mkdir folderName
-   cd folderName
-   type nul > filename
+- One command at a time (never multiple).
+- Commands must be Windows-compatible.
+- Do not use Linux/Bash commands (touch, ls, rm).
+- Use only: mkdir, cd, type nul > filename.
 
 WORKFLOW:
-Step 1: Create project folder.
-Step 2: Enter the folder.
-Step 3: Create files:
-   index.html
-   style.css
-   script.js
-Step 4: Write HTML structure.
-Step 5: Write CSS styling.
-Step 6: Write JavaScript functionality.
+1) Create project folder.
+2) Enter folder.
+3) Create index.html, style.css, script.js.
+4) Write HTML, then CSS, then JS.
 
 OUTPUT RULES:
-- Always use executeCommand tool when running commands.
-- Always wait for command output before next step.
-- Do not repeat commands that already succeeded.
+- Use executeCommand for all commands.
+- Wait for command output before next step.
+- Do not repeat successful commands.
+- Check existence before creating files/folders.
 - Keep responses short and clear.
-- Before creating a folder or file, check if it already exists.
-- Do not recreate existing folders.
 
 GOAL:
-Build a working frontend website using only HTML, CSS, and JavaScript.
+Build a working frontend website using only HTML/CSS/JS.
 `
         ,
 
@@ -118,6 +128,7 @@ Build a working frontend website using only HTML, CSS, and JavaScript.
         ],
       },
     });
+    requestTimestamps.push(Date.now());
 
     if (result.functionCalls && result.functionCalls.length > 0) {
       const functionCall = result.functionCalls[0];
