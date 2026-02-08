@@ -53,14 +53,14 @@ async function executeCommand(command) {
 const commandExecutor = {
   name: "executeCommand",
   description:
-    "It takes any shell/terminal command as input and executes it in the system, returning the output or error message, It will help us to create, update, delete files and folders, install packages, run scripts and do anything that we can do using terminal.",
+    "It takes any shell/terminal command as input and executes it in the system, returning the output or error message, It will help us to create, update, delete files and folders, run scripts and do anything that we can do using terminal.",
   parameters: {
     type: Type.OBJECT,
     properties: {
       command: {
         type: Type.STRING,
         description:
-          "It is the shell/terminal command that you want to execute in the system. It can be any valid command that can be run in the terminal, such as 'ls', 'mkdir new_folder', 'npm install package_name', 'node script.js' etc.",
+          "It is the shell/terminal command that you want to execute in the system. It can be any valid command that can be run in the terminal, such as 'ls', 'mkdir new_folder' etc.",
       },
     },
     required: ["command"],
@@ -69,13 +69,16 @@ const commandExecutor = {
 
 const History = [];
 const requestTimestamps = [];
-const MAX_REQUESTS_PER_MINUTE = 950;
+const MAX_REQUESTS_PER_MINUTE = 100;
 const REQUEST_WINDOW_MS = 60_000;
 
 async function waitForRateLimit() {
   while (true) {
     const now = Date.now();
-    while (requestTimestamps.length > 0 && now - requestTimestamps[0] > REQUEST_WINDOW_MS) {
+    while (
+      requestTimestamps.length > 0 &&
+      now - requestTimestamps[0] > REQUEST_WINDOW_MS
+    ) {
       requestTimestamps.shift();
     }
     if (requestTimestamps.length < MAX_REQUESTS_PER_MINUTE) {
@@ -109,6 +112,21 @@ COMMAND RULES:
 - Do not use Linux/Bash commands (touch, ls, rm).
 - Use only: mkdir, cd, type nul > filename.
 
+STRICT RULES:
+  To write HTML, CSS, or JavaScript files:
+
+    Use this format:
+    echo line1 > file
+    echo line2 >> file
+    echo line3 >> file
+
+    Do NOT use:
+    cat <<EOF
+    const html =
+    heredoc syntax
+
+    Do not repeat successful commands.
+    Check existence before creating files/folders.
 WORKFLOW:
 1) Create project folder.
 2) Enter folder.
@@ -124,9 +142,7 @@ OUTPUT RULES:
 
 GOAL:
 Build a working frontend website using only HTML/CSS/JS.
-`
-        ,
-
+`,
         tools: [
           {
             functionDeclarations: [commandExecutor],
