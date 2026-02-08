@@ -8,25 +8,28 @@ import os from "os";
 dotenv.config();
 const platform = os.platform();
 const execute = util.promisify(exec);
-
+console.log(platform);
 // configure gen ai client
 const ai = new GoogleGenAI({
   apiKey: process.env.GENAI_API_KEY,
 });
 
 //tool
+let currentDir = process.cwd();
+
 async function executeCommand(command) {
   try {
-    const commands = command.split("\n");
-    let finalOutput = "";
-
-    for (const cmd of commands) {
-      if (!cmd.trim()) continue;
-      const { stdout, stderr } = await execute(cmd);
-      finalOutput += stdout || stderr;
+    if (command.startsWith("cd ")) {
+      const folder = command.replace("cd ", "").trim();
+      currentDir = require("path").join(currentDir, folder);
+      return `Changed directory to ${currentDir}`;
     }
 
-    return finalOutput || "Command executed";
+    const { stdout, stderr } = await execute(command, {
+      cwd: currentDir,
+    });
+
+    return stdout || stderr || "Command executed";
   } catch (error) {
     return error.message;
   }
