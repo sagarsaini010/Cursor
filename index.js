@@ -61,6 +61,40 @@ const commandExecutor = {
   },
 };
 
+async function writeFile(filePath, content) {
+  try {
+    const resolvedPath = path.resolve(filePath);
+    const dirName = path.dirname(resolvedPath);
+    if (!fs.existsSync(dirName)) {
+      fs.mkdirSync(dirName, { recursive: true });
+    }
+    fs.writeFileSync(resolvedPath, content, "utf8");
+    return `Wrote file: ${filePath}`;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+const writeFileTool = {
+  name: "writeFile",
+  description:
+    "Writes content to a file using the filesystem. Use this to write HTML, CSS, or JS code into created files.",
+  parameters: {
+    type: Type.OBJECT,
+    properties: {
+      filePath: {
+        type: Type.STRING,
+        description: "Path to the file to write.",
+      },
+      content: {
+        type: Type.STRING,
+        description: "The full content to write into the file.",
+      },
+    },
+    required: ["filePath", "content"],
+  },
+};
+
 const History = [];
 const requestTimestamps = [];
 const MAX_REQUESTS_PER_MINUTE = 950;
@@ -102,6 +136,7 @@ COMMAND RULES:
 - Commands must be Windows-compatible.
 - Do not use Linux/Bash commands (touch, ls, rm).
 - Use only: mkdir, cd, type nul > filename.
+- Write file contents using the writeFile tool (do not use shell redirection).
 
 WORKFLOW:
 1) Create project folder.
@@ -111,6 +146,7 @@ WORKFLOW:
 
 OUTPUT RULES:
 - Use executeCommand for all commands.
+- Use writeFile to add or update file contents.
 - Wait for command output before next step.
 - Do not repeat successful commands.
 - Check existence before creating files/folders.
@@ -123,7 +159,7 @@ Build a working frontend website using only HTML/CSS/JS.
 
         tools: [
           {
-            functionDeclarations: [commandExecutor],
+            functionDeclarations: [commandExecutor, writeFileTool],
           },
         ],
       },
@@ -144,6 +180,17 @@ Build a working frontend website using only HTML/CSS/JS.
         History.push({
           role: "user",
           parts: [{ text: `Command output:\n${output || "Done"}` }],
+        });
+      }
+
+      if (name === "writeFile") {
+        const { filePath, content } = args;
+        const output = await writeFile(filePath, content);
+        console.log("Write Output:", output);
+
+        History.push({
+          role: "user",
+          parts: [{ text: `Write output:\n${output || "Done"}` }],
         });
       }
     } else {
