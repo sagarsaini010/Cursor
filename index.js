@@ -26,29 +26,30 @@ async function executeCommand(command) {
 
     for (const cmd of commands) {
       if (!cmd.trim()) continue;
+
       const trimmed = cmd.trim();
+
       if (trimmed.toLowerCase().startsWith("mkdir ")) {
         const dirArg = trimmed.slice(6).trim();
         const dirName = dirArg.replace(/^["']|["']$/g, "");
         const dirPath = path.resolve(dirName);
+
         if (fs.existsSync(dirPath)) {
           finalOutput += `Skipped: directory already exists (${dirName})\n`;
           continue;
         }
       }
-      const { stdout, stderr } = await execute(cmd);
+
+      const { stdout, stderr } = await execute(cmd, { cwd: currentDir });
       finalOutput += stdout || stderr;
     }
 
-    const { stdout, stderr } = await execute(command, {
-      cwd: currentDir,
-    });
-
-    return stdout || stderr || "Command executed";
+    return finalOutput || "Command executed";
   } catch (error) {
     return error.message;
   }
 }
+
 
 const commandExecutor = {
   name: "executeCommand",
