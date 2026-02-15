@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #eff1f6;
+        }
+        .code-editor {
+            font-family: 'Fira Code', monospace;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 8px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 4px;
+        }
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: #5a5a5a;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Navbar = () => (
+            <nav className="flex items-center justify-between px-4 py-2 bg-[#282828] border-b border-[#3e3e3e] h-12">
+                <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-2">
+                        <img src="https://leetcode.com/static/images/LeetCode_logo_rvs.png" alt="Logo" className="h-5" />
+                    </div>
+                    <div className="hidden md:flex items-center space-x-4 text-sm font-medium text-gray-400">
+                        <a href="#" className="hover:text-white">Explore</a>
+                        <a href="#" className="text-white border-b-2 border-white pb-3 mt-3">Problems</a>
+                        <a href="#" className="hover:text-white">Contest</a>
+                        <a href="#" className="hover:text-white">Discuss</a>
+                        <a href="#" className="hover:text-white text-orange-400">Interview</a>
+                        <a href="#" className="hover:text-white">Store</a>
+                    </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                    <button className="text-gray-400 hover:text-white">
+                        <i className="lucide-bell w-5 h-5"></i>
+                    </button>
+                    <button className="text-gray-400 hover:text-white">
+                        <i className="lucide-flame w-5 h-5"></i>
+                    </button>
+                    <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-xs font-bold">
+                        JD
+                    </div>
+                    <button className="bg-[#ffa1161f] text-[#ffa116] px-3 py-1 rounded text-sm font-medium hover:bg-[#ffa11633]">
+                        Premium
+                    </button>
+                </div>
+            </nav>
+        );
+
+        const ProblemDescription = () => (
+            <div className="flex flex-col h-full bg-[#282828] rounded-lg overflow-hidden border border-[#3e3e3e]">
+                <div className="flex items-center space-x-4 px-4 py-2 bg-[#333333] border-b border-[#3e3e3e]">
+                    <button className="text-sm font-medium text-white border-b-2 border-white pb-1">Description</button>
+                    <button className="text-sm font-medium text-gray-400 hover:text-white">Editorial</button>
+                    <button className="text-sm font-medium text-gray-400 hover:text-white">Solutions</button>
+                    <button className="text-sm font-medium text-gray-400 hover:text-white">Submissions</button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-6 scrollbar-custom">
+                    <h1 className="text-2xl font-bold mb-4">1. Two Sum</h1>
+                    <div className="flex items-center space-x-2 mb-4">
+                        <span className="px-3 py-1 text-xs font-medium rounded-full bg-[#2cbb5d1f] text-[#2cbb5d]">Easy</span>
+                        <span className="text-gray-500 text-xs flex items-center">
+                            <i className="lucide-thumbs-up w-4 h-4 mr-1"></i> 52.4K
+                        </span>
+                        <span className="text-gray-500 text-xs flex items-center">
+                            <i className="lucide-thumbs-down w-4 h-4 mr-1"></i> 1.7K
+                        </span>
+                    </div>
+                    <div className="text-sm leading-relaxed space-y-4">
+                        <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.</p>
+                        <p>You may assume that each input would have <b>exactly one solution</b>, and you may not use the same element twice.</p>
+                        <p>You can return the answer in any order.</p>
+                        
+                        <div className="space-y-4 mt-6">
+                            <p className="font-bold">Example 1:</p>
+                            <pre className="bg-[#3e3e3e] p-4 rounded-lg">
+                                <b>Input:</b> nums = [2,7,11,15], target = 9{"\n"}
+                                <b>Output:</b> [0,1]{"\n"}
+                                <b>Explanation:</b> Because nums[0] + nums[1] == 9, we return [0, 1].
+                            </pre>
+
+                            <p className="font-bold">Example 2:</p>
+                            <pre className="bg-[#3e3e3e] p-4 rounded-lg">
+                                <b>Input:</b> nums = [3,2,4], target = 6{"\n"}
+                                <b>Output:</b> [1,2]
+                            </pre>
+
+                            <p className="font-bold">Constraints:</p>
+                            <ul className="list-disc ml-6 space-y-1">
+                                <li><code>2 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
+                                <li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
+                                <li><code>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></code></li>
+                                <li className="italic">Only one valid answer exists.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const CodeEditor = () => {
+            const [code, setCode] = useState(
+`/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    
+};`);
+
+            return (
+                <div className="flex flex-col h-full bg-[#282828] rounded-lg overflow-hidden border border-[#3e3e3e]">
+                    <div className="flex items-center justify-between px-4 py-2 bg-[#333333] border-b border-[#3e3e3e]">
+                        <div className="flex items-center space-x-2">
+                            <span className="text-sm font-medium text-white bg-[#3e3e3e] px-2 py-1 rounded">JavaScript</span>
+                            <button className="text-gray-400 hover:text-white">
+                                <i className="lucide-settings w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <button className="text-gray-400 hover:text-white">
+                                <i className="lucide-refresh-cw w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="flex-1 relative">
+                        <textarea
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
+                            className="w-full h-full bg-[#1a1a1a] text-[#eff1f6] p-4 code-editor outline-none resize-none"
+                            spellCheck="false"
+                        />
+                    </div>
+                    <div className="flex items-center justify-between px-4 py-2 bg-[#282828] border-t border-[#3e3e3e]">
+                        <div className="flex items-center space-x-4">
+                            <button className="text-sm font-medium text-gray-400 hover:text-white flex items-center">
+                                <i className="lucide-terminal w-4 h-4 mr-2"></i> Console
+                            </button>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <button className="px-4 py-1.5 bg-[#3e3e3e] hover:bg-[#4a4a4a] text-white rounded font-medium text-sm transition-colors">
+                                Run
+                            </button>
+                            <button className="px-4 py-1.5 bg-[#2cbb5d] hover:bg-[#28a854] text-white rounded font-medium text-sm transition-colors">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            return (
+                <div className="flex flex-col h-screen overflow-hidden">
+                    <Navbar />
+                    <main className="flex-1 flex gap-2 p-2 overflow-hidden">
+                        <div className="w-1/2 h-full">
+                            <ProblemDescription />
+                        </div>
+                        <div className="w-1/2 h-full">
+                            <CodeEditor />
+                        </div>
+                    </main>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
