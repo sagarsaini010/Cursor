@@ -128,7 +128,7 @@ async function buildWebsite(question) {
   while (true) {
     await waitForRateLimit();
     const result = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-3-pro-preview",
       contents: History,
       config: {
         systemInstructions: `

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Clone</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fab fa-spotify"></i>
+                <span>Spotify</span>
+            </div>
+            
+            <div class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-search"></i> Search</a></li>
+                    <li><a href="#"><i class="fas fa-book"></i> Your Library</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-nav second-nav">
+                <ul>
+                    <li><a href="#"><i class="fas fa-plus-square"></i> Create Playlist</a></li>
+                    <li><a href="#"><i class="fas fa-heart"></i> Liked Songs</a></li>
+                </ul>
+            </div>
+
+            <div class="playlist-list">
+                <!-- Playlists will be populated here -->
+                <p>My Playlist #1</p>
+                <p>Coding Vibes</p>
+                <p>Chill Hits</p>
+                <p>Top 50 - Global</p>
+                <p>Rock Classics</p>
+                <p>Podcast Favorites</p>
+                <p>Workout Mix</p>
+                <p>Focus Flow</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="nav-arrows">
+                    <button class="circle-btn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="circle-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="user-menu">
+                    <button class="upgrade-btn">Explore Premium</button>
+                    <button class="install-btn"><i class="fas fa-arrow-down"></i> Install App</button>
+                    <button class="user-profile"><i class="fas fa-user"></i></button>
+                </div>
+            </div>
+
+            <div class="content-scroll">
+                <h2>Good morning</h2>
+                <div class="cards-container-small">
+                    <div class="card-small">
+                        <img src="https://picsum.photos/seed/1/60" alt="Liked Songs">
+                        <span>Liked Songs</span>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="card-small">
+                        <img src="https://picsum.photos/seed/2/60" alt="Playlist">
+                        <span>Daily Mix 1</span>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="card-small">
+                        <img src="https://picsum.photos/seed/3/60" alt="Playlist">
+                        <span>Discover Weekly</span>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="card-small">
+                        <img src="https://picsum.photos/seed/4/60" alt="Playlist">
+                        <span>Release Radar</span>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                </div>
+
+                <h2>Made for You</h2>
+                <div class="cards-container-large">
+                    <div class="card-large">
+                        <img src="https://picsum.photos/seed/5/150" alt="Album Art">
+                        <h3>Daily Mix 1</h3>
+                        <p>Arctic Monkeys, The Strokes, and more</p>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="card-large">
+                        <img src="https://picsum.photos/seed/6/150" alt="Album Art">
+                        <h3>Daily Mix 2</h3>
+                        <p>Eminem, Dr. Dre, 50 Cent</p>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="card-large">
+                        <img src="https://picsum.photos/seed/7/150" alt="Album Art">
+                        <h3>Daily Mix 3</h3>
+                        <p>Pop hits to keep you moving</p>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="card-large">
+                        <img src="https://picsum.photos/seed/8/150" alt="Album Art">
+                        <h3>Daily Mix 4</h3>
+                        <p>Chill beats for studying</p>
+                        <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                </div>
+                
+                <h2>Recently Played</h2>
+                 <div class="cards-container-large">
+                    <div class="card-large">
+                        <img src="https://picsum.photos/seed/9/150" alt="Album Art">
+                        <h3>Top Hits</h3>
+                        <p>The hottest tracks right now.</p>
+                         <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                    <div class="card-large">
+                        <img src="https://picsum.photos/seed/10/150" alt="Album Art">
+                        <h3>Indie Rock</h3>
+                        <p>Best indie tracks of 2023.</p>
+                         <button class="play-btn-hover"><i class="fas fa-play"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Music Player Bar -->
+        <div class="player-bar">
+            <div class="now-playing">
+                <img src="https://picsum.photos/seed/11/50" alt="Album Art" id="current-track-img">
+                <div class="track-info">
+                    <h4 id="track-name">Song Name</h4>
+                    <p id="artist-name">Artist</p>
+                </div>
+                <div class="like-icon">
+                    <i class="far fa-heart"></i>
+                </div>
+            </div>
+
+            <div class="player-controls">
+                <div class="controls-top">
+                    <button class="control-btn"><i class="fas fa-random"></i></button>
+                    <button class="control-btn"><i class="fas fa-step-backward"></i></button>
+                    <button class="control-btn play-pause" id="master-play"><i class="fas fa-play-circle"></i></button>
+                    <button class="control-btn"><i class="fas fa-step-forward"></i></button>
+                    <button class="control-btn"><i class="fas fa-redo"></i></button>
+                </div>
+                <div class="progress-bar-container">
+                    <span id="current-time">0:00</span>
+                    <input type="range" id="progress-bar" min="0" max="100" value="0">
+                    <span id="total-duration">3:45</span>
+                </div>
+            </div>
+
+            <div class="volume-controls">
+                <i class="fas fa-list"></i>
+                <i class="fas fa-desktop"></i>
+                <i class="fas fa-volume-up"></i>
+                <input type="range" id="volume-bar" min="0" max="100" value="50">
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
