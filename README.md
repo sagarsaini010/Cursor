@@ -1,35 +1,68 @@
-# AI Website Builder (Node.js + Gemini)
+# AI Website Builder Agent  
+### Planner–Executor based AI agent that generates frontend websites automatically
 
-This project is a simple **AI-powered website builder** that can create frontend websites using **HTML, CSS, and JavaScript** by executing terminal commands automatically.
+This project is an **AI-powered website builder agent** that can generate a complete frontend website using **HTML, CSS, and JavaScript** from a simple text prompt.
 
-The AI understands user instructions and builds the project step-by-step.
+The agent understands the user's request, plans the steps required to build the website, and then executes those steps by creating files and folders automatically.
 
----
-
-## Features
-
-* Builds simple frontend websites
-* Creates project folders and files automatically
-* Executes terminal commands using Node.js
-* Uses Gemini API for AI reasoning
-* Works with HTML, CSS, and JavaScript only
+This project was built to understand how **AI agents, tool calling, and autonomous workflows** work internally.
 
 ---
 
-## Technologies Used
+## Demo
 
-* Node.js
-* Gemini API (@google/genai)
-* readline-sync
-* dotenv
-* child_process
+Example of the agent generating a website:
+## A calculator
+<img width="1919" height="1038" alt="demo" src="https://github.com/user-attachments/assets/a6e2ad31-432b-40db-8f7b-8e125472976a" />
+---
+## Leetcode-clone
+<img width="1919" height="1079" alt="Screenshot 2026-02-16 094113" src="https://github.com/user-attachments/assets/3320b557-7632-47af-bf80-231fcb548421" />
+---
+## Spotify-clone
+<img width="1918" height="1041" alt="Screenshot 2026-02-16 094054" src="https://github.com/user-attachments/assets/1b394b75-8790-42ef-ac27-b115d7fb416f" />
+---
+## Login page
+<img width="1919" height="1078" alt="Screenshot 2026-02-16 094104" src="https://github.com/user-attachments/assets/b0fe2bf5-4e30-4cbb-a4df-0a75d09cb3a1" />
+
+
+## Key Highlights
+
+- AI Agent architecture (Planner → Executor workflow)
+- Automatic file and folder generation
+- Terminal command execution from AI decisions
+- Rate limit handling and retry logic
+- State-aware execution to reduce hallucinations
+- Strict environment rules to prevent framework usage
+
+---
+
+## How It Works
+
+The system follows a simplified AI agent architecture:
+
+1. User provides a prompt  
+2. AI plans the steps required  
+3. Executor runs commands step-by-step  
+4. Files and folders are generated automatically  
+
+This mimics how modern AI coding assistants work internally.
+
+---
+
+## Tech Stack
+
+- Node.js  
+- Google Gemini API (@google/genai)  
+- readline-sync  
+- dotenv  
+- child_process  
+- File System (fs)
 
 ---
 
 ## Project Structure
-
 ```
-project-folder/
+Cursor/
 │
 ├── index.js
 ├── .env
@@ -37,27 +70,26 @@ project-folder/
 └── node_modules/
 ```
 
-Generated websites will be created inside new folders automatically.
+Generated websites are created dynamically inside new folders.
 
 ---
 
 ## Installation
 
-### 1. Clone or download the project
-
+### 1. Clone the repository
 ```
 git clone <your-repo-url>
-cd project-folder
+cd Cursor
 ```
 
-### 2. Install dependencies
 
+### 2. Install dependencies
 ```
 npm install
 ```
+### 3. Configure environment variables
 
-### 3. Create a .env file
-
+Create a `.env` file:
 ```
 GENAI_API_KEY=your_api_key_here
 ```
@@ -65,55 +97,61 @@ GENAI_API_KEY=your_api_key_here
 ---
 
 ## Run the Project
-
 ```
 node index.js
 ```
 
-Then type:
-
+Example input:
 ```
-build a calculator website
+Create a calculator website
 ```
 
-The AI will start creating files and folders automatically.
+The agent will automatically generate the website.
 
 ---
 
-## Important Notes
+## Features
 
-* Free Gemini API has rate limits.
-* Wait a few seconds between requests if you hit quota errors.
-* The agent is designed for frontend projects only.
+- Builds frontend websites automatically
+- Creates project structure
+- Writes HTML, CSS, JS files
+- Executes terminal commands safely
+- Handles API limits and retries
+- Prevents use of frameworks
 
 ---
 
-## Supported Commands
+## Limitations
 
-The AI is allowed to:
-
-* Create folders
-* Create HTML files
-* Create CSS files
-* Create JavaScript files
-
-The AI will NOT:
-
-* Install npm packages
-* Use frameworks like React or Angular
-* Create backend code
+- Designed for small frontend projects
+- Free API quota may cause delays
+- No live preview (yet)
 
 ---
 
 ## Future Improvements
 
-* Auto-write HTML, CSS, JS content
-* Preview website automatically
-* Better command validation
-* Project state tracking
+- Automatic preview server
+- Evaluator agent for validation
+- Improved planning accuracy
+- UI for controlling the agent
+- Multi-step planning support
 
 ---
+
+## What I Learned
+
+Through this project, I gained hands-on experience with:
+
+- AI agent design
+- Tool calling workflows
+- Planner–Executor pattern
+- Handling hallucinations in LLMs
+- Node.js automation
+
+--- 
 
 ## Author
 
 Sagar Saini
+B.Tech Student | Aspiring Software Engineer | Learning AI Agents and Full Stack Development
